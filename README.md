@@ -6,4 +6,5 @@ This application is a remake of my previous [book management application](https:
 
 ### Current status of this project
 The project is still in the planning and design stage.
+**Update** Initial project plan can be found on docs directory.
 
