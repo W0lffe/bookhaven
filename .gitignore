@@ -42,3 +42,6 @@ next-env.d.ts
 
 # docs
 /docs/*.docx
+
+#temp passwd file
+src/app/passwd.js
