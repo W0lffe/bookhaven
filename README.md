@@ -8,3 +8,8 @@ This application is a remake of my previous [book management application](https:
 The project is still in the planning and design stage.
 [BookHaven Project Roadmap](https://github.com/users/W0lffe/projects/6/views/4)
 
+
+### Third-party Resources
+- Icons: Font Awesome Free
+- Font Awesome Free is licensed under the applicable MIT, CC BY 4.0,
+  and SIL OFL 1.1 licenses.
