@@ -18,3 +18,7 @@ export const generateRecoveryCode = () => {
 
     return code;
 }
+
+export const comparePasswords = async(password, hash) => {
+    return await bcrypt.compare(password, hash);
+}
