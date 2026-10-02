@@ -2,11 +2,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 
 export const hashPassword = async (password) => {
-    const saltRounds = 12;
-
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    return hashedPassword;
+    return await bcrypt.hash(password, 12) //12 salt rounds
 }
 
 export const generateRecoveryCode = () => {

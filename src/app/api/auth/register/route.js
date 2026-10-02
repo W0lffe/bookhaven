@@ -11,18 +11,19 @@ export async function POST(req){
 
         if(hasErrors){
             //console.log(hasErrors)
-            return NextResponse.json({message: hasErrors})
+            return NextResponse.json({message: hasErrors}, {status: 400})
         }
 
         const hashedPassword = await hashPassword(password);
         //console.log(hashedPassword)
         const recCode = generateRecoveryCode();
+        const hashedRecovery = await hashPassword(recCode);
         //console.log(recCode)
 
         const newUser = {
             username,
             passwdHash: hashedPassword,
-            recovery: recCode,
+            recovery: hashedRecovery,
             created: Date.now()
         }
 
@@ -30,10 +31,9 @@ export async function POST(req){
 
         const client = await connectToMongoDB();
         const db = client.db("bookhaven");
+        await db.collection("user").insertOne(newUser);
 
-        const result = await db.collection("user").insertOne(newUser);
-
-        return NextResponse.json({message: "User created successfully!"}, {status: 200})
+        return NextResponse.json({message: "User created successfully!", recovery: recCode}, {status: 201})
     } catch (error) {
         return NextResponse.json({message: "Something went wrong, try again later."}, {status: 500})
     }

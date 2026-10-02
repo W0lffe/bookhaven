@@ -3,6 +3,22 @@ import NavButton from "./components/NavButton/NavButton";
 
 export default function Home() {
 
+  const testpost = async() => {
+
+    const res = await fetch("http://localhost:3000/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({username: "DB_Teppis", password: "Testipassu"})
+    })
+
+    const resp = await res.json();
+    console.log("vastaus", resp)
+  }
+
+  testpost();
+
   return (
     <>
 

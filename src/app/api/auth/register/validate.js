@@ -19,7 +19,7 @@ export const validateUserData = async(username, password) => {
 
     const isTaken = await checkIsUsernameTaken();
     if(isTaken){
-        return "Username is taken!";
+        return "Username is already taken!";
     }
     
     if(password.length == 0){
