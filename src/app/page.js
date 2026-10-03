@@ -1,3 +1,4 @@
+"use client";
 import NavBar from "./components/NavBar/NavBar";
 import NavButton from "./components/NavButton/NavButton";
 
@@ -12,7 +13,8 @@ export default function Home() {
       },
       body: JSON.stringify({
         username: "DB_Teppo",
-        password: "Teppotesting"
+        password: "Teppotesting",
+        expire: true
       })
     })
 
