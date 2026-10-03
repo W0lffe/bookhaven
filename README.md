@@ -9,7 +9,9 @@ Development of BookHaven has started. The first draft of the home page has been 
 
 The MongoDB database has also been initialized, and a reusable database connection script has been created for managing the connection between the application and the database.
 
-###### Next milestone: [Creating Accounts and Secure Login](https://github.com/W0lffe/bookhaven/milestone/2)
+Currently working on user creation and authentications! So far I have managed to implemented Registering and Login API, with JWT token generation for authenticating and using bcrypt for hashing passwords to database.
+
+###### Currently working on milestone: [Creating Accounts and Secure Login](https://github.com/W0lffe/bookhaven/milestone/2)
 #### [BookHaven Project Roadmap](https://github.com/users/W0lffe/projects/6/views/4)
 
 

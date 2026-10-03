@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
+import { jwt_secret } from "../passwd";
 
 export const hashPassword = async (password) => {
     return await bcrypt.hash(password, 12) //12 salt rounds
@@ -17,4 +19,23 @@ export const generateRecoveryCode = () => {
     }
 
     return code;
+}
+
+export const comparePasswords = async(password, hash) => {
+    return await bcrypt.compare(password, hash);
+}
+
+export const generateToken = (userDetails, expire) => {
+
+    const payload = {
+        ...userDetails
+    }
+
+    let options = {};
+    if(expire){
+        options = {expiresIn: "24h"}
+    }
+
+    const token = jwt.sign(payload, jwt_secret, options);
+    return token;
 }

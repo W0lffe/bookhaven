@@ -1,3 +1,4 @@
+"use client";
 import NavBar from "./components/NavBar/NavBar";
 import NavButton from "./components/NavButton/NavButton";
 
