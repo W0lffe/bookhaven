@@ -39,3 +39,20 @@ export const generateToken = (userDetails, expire) => {
     const token = jwt.sign(payload, jwt_secret, options);
     return token;
 }
+
+export const authenticate = async (request) => {
+
+    const token = request.cookies.get("authToken")?.value;
+
+    if (!token) {
+        return null;
+    }
+
+    try {
+        const user = jwt.verify(token, jwt_secret);
+
+        return user;
+    } catch (error) {
+        return null;
+    }
+};

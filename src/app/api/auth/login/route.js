@@ -28,7 +28,7 @@ export const POST = async (req) => {
         if(expire){
             cookieOptions = {
                 ...cookieOptions,
-                maxAge: 60  * 60 * 24
+                maxAge: 60 * 60 * 24
             }
         }
         //console.log(cookieOptions)
