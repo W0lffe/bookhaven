@@ -11,6 +11,8 @@ The MongoDB database has also been initialized, and a reusable database connecti
 
 Currently working on user creation and authentications! So far I have managed to implemented Registering and Login API, with JWT token generation for authenticating and using bcrypt for hashing passwords to database.
 
+I have started to work on this project using an AI agent-assisted development approach. Please note that there was a small break in development due to personal reasons, which has caused a slight delay in the overall timeline.
+
 ###### Currently working on milestone: [Creating Accounts and Secure Login](https://github.com/W0lffe/bookhaven/milestone/2)
 #### [BookHaven Project Roadmap](https://github.com/users/W0lffe/projects/6/views/4)
 
