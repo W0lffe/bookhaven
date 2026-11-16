@@ -26,7 +26,6 @@ export const comparePasswords = async(password, hash) => {
 }
 
 export const generateToken = (userDetails, expire) => {
-
     const payload = {
         ...userDetails
     }
@@ -41,7 +40,6 @@ export const generateToken = (userDetails, expire) => {
 }
 
 export const authenticate = async (request) => {
-
     const token = request.cookies.get("authToken")?.value;
 
     if (!token) {
@@ -54,5 +52,21 @@ export const authenticate = async (request) => {
         return user;
     } catch (error) {
         return null;
+    }
+};
+
+export const handleLogout = async () => {
+    try {
+        const response = await fetch("/api/auth/logout", {
+            method: "POST",
+        });
+
+        if (response.ok) {
+            const res = await response.json();
+            console.log(res)
+            //router.push("/");
+        }
+    } catch (error) {
+        console.error("Logout failed", error);
     }
 };
