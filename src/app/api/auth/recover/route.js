@@ -23,7 +23,7 @@ export async function POST(req) {
     const isMatch = await comparePasswords(recCode, user.recovery);
 
     if (isMatch) {
-      return NextResponse.json({ message: 'Redirecting...' }, { status: 200 });
+      return NextResponse.json({ message: 'Match!' }, { status: 200 });
     }
 
     return NextResponse.json({ message: 'Invalid username or recovery code.' }, { status: 401 });
