@@ -39,8 +39,8 @@ export const generateToken = (userDetails, expire) => {
     return token;
 }
 
-export const authenticate = async (request) => {
-    const token = request.cookies.get("authToken")?.value;
+export const authenticate = async (token) => {
+    //const token = request.cookies.get("authToken")?.value;
 
     if (!token) {
         return null;

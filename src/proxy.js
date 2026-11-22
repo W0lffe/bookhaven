@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { authenticate } from "./app/auth/auth";
 
-export function proxy(request) {
+export async function proxy(request) {
     const token = request.cookies.get("authToken")?.value;
     const url = new URL(request.url);
 
     // 1. If the user is going to the login page, let them through regardless of token
     if (url.pathname === "/login") {
         // Check if they ALREADY have a valid token and should be redirected to dashboard
-        if (token && authenticate(token)) {
+        if (token && await authenticate(token)) {
             return NextResponse.redirect(new URL("/dashboard", request.url));
         }
         // If no token or invalid token, let them see the login page
@@ -22,7 +22,7 @@ export function proxy(request) {
     }
 
     // 3. Token exists, now check if it's actually valid
-    if (authenticate(token)) {
+    if (await authenticate(token)) {
         return NextResponse.next();
     } else {
         // Token exists but is invalid/expired? Redirect to login

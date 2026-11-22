@@ -4,6 +4,28 @@ import NavButton from "./components/NavButton/NavButton";
 
 export default function Home() {
 
+  const test = async() => {
+    const response = await fetch("/api/books", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "same-origin",
+      body: JSON.stringify({
+        author: "J.K. Rowling",
+        coverImage: "https://example.com/cover.jpg",
+        title: "Harry Potter and the Sorcerer's Stone",
+        pageCount: 309,
+        rating: 5,
+        readDate: "2023-10-27"
+      })
+    })
+    const data = await response.json();
+    console.log(data);
+  }
+
+  test();
+
   return (
     <>
 
@@ -31,5 +53,6 @@ export default function Home() {
     </>
   );
 }
+
 
 
