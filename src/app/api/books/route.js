@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-// Assuming a database client exists in src/app/db/
 import { connectToMongoDB } from '@/app/db/database';
 import { authenticate } from '@/app/auth/auth';
 
@@ -9,18 +8,14 @@ export async function POST(request) {
     const user = await authenticate(token);
     console.log("user", user)
 
-    if(!await authenticate(token)){
-        return NextResponse.json({message: "Unauthorized!"}, { status: 401 });
+    if (!user) {
+        return NextResponse.json({ message: "Unauthorized!" }, { status: 401 });
     }
 
     try {
         const body = await request.json();
-        const { author, coverImage, title, pageCount, userId, rating, readDate } = body;
+        const { author, coverImage, title, pageCount, rating, readDate } = body;
 
-
-
-        // 1. Data Validation
-        // Ensure no nulls, no empty strings, and all required fields are present
         const requiredFields = ['author', 'coverImage', 'title', 'pageCount', 'rating', 'readDate'];
         for (const field of requiredFields) {
             if (body[field] === undefined || body[field] === null || (typeof body[field] === 'string' && body[field].trim() === '')) {
@@ -31,48 +26,67 @@ export async function POST(request) {
         const client = await connectToMongoDB();
         const db = client.db("bookhaven");
 
-        // 2. Handle Author
-        // Check if author exists
-        let authorRecord = await db.author.findUnique({ where: { name: author } });
-        
-        if (!authorRecord) {
-            // Create new author
-            authorRecord = await db.author.create({
-                data: { name: author }
-            });
-        }
-
-        // 3. Handle Book
-        // Check if book exists (using title as a unique identifier for this example)
-        let bookRecord = await db.book.findUnique({ where: { title: title } });
-
-        if (!bookRecord) {
-            // Create new book
-            bookRecord = await db.book.create({
-                data: {
-                    authorId: authorRecord.id,
-                    coverImage: coverImage,
-                    title: title,
-                    pageCount: parseInt(pageCount)
-                }
-            });
-        }
-
-        // 4. Create UserBook
-        await db.userBook.create({
-            data: {
-                userId: userId,
-                bookId: bookRecord.id,
-                rating: parseInt(rating),
-                readDate: new Date(readDate)
-            }
+        let authorRecord = await db.collection("author").findOne({
+            name: author
         });
 
-        // 5. Success Response
-        return NextResponse.json({ message: "Success" }, { status: 200 });
+        if (!authorRecord) {
+            const result = await db.collection("author").insertOne({ name: author });
+            authorRecord = await db.collection("author").findOne({
+                _id: result.insertedId
+            });
+            console.log("ei löydy, luotiin", authorRecord)
+        }
+
+        console.log("löyty", authorRecord)
+
+        let bookRecord = await db.collection("book").findOne({ 
+            title, authorId: authorRecord._id 
+        })
+
+        if (!bookRecord) {
+            const book = {
+                title,
+                authorId: authorRecord._id,
+                coverImage: coverImage ? coverImage : null,
+                pageCount
+            }
+
+            const result = await db.collection("book").insertOne(book);
+            bookRecord = await db.collection("book").findOne({
+                _id: result.insertedId
+            });
+            console.log("ei löydy, luotiin", bookRecord)
+            
+        }
+
+        console.log("löyty", bookRecord)
+
+        const userBookRecord = await db.collection("userbook").findOne({ 
+            userId: user.userId,
+            bookId: bookRecord._id
+        });
+
+        if(userBookRecord){
+            console.log("userBook löyty jo", userBookRecord)
+            return NextResponse.json({ message: "Record exists already." }, { status: 400 });
+        }
+
+        const userBook = {
+            userId: user.userId,
+            bookId: bookRecord._id,
+            rating,
+            readDate
+        }
+
+        console.log("luotiin userBook", userBook)
+
+        await db.collection("userbook").insertOne(userBook);
+
+        return NextResponse.json({ message: "Record added successfully!" }, { status: 200 });
 
     } catch (error) {
-        console.error("Error adding book:", error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        //console.error("Error adding book:", error);
+        return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
     }
 }

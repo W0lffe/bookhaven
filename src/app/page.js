@@ -4,28 +4,6 @@ import NavButton from "./components/NavButton/NavButton";
 
 export default function Home() {
 
-  const test = async() => {
-    const response = await fetch("/api/books", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "same-origin",
-      body: JSON.stringify({
-        author: "J.K. Rowling",
-        coverImage: "https://example.com/cover.jpg",
-        title: "Harry Potter and the Sorcerer's Stone",
-        pageCount: 309,
-        rating: 5,
-        readDate: "2023-10-27"
-      })
-    })
-    const data = await response.json();
-    console.log(data);
-  }
-
-  test();
-
   return (
     <>
 
@@ -33,7 +11,7 @@ export default function Home() {
       <div className="flex flex-col items-center gap-5">
 
         <section className="p-5">
-           <p><strong>Keep your collection within reach.</strong></p>
+          <p><strong>Keep your collection within reach.</strong></p>
         </section>
 
         <section className="flex flex-col gap-5 w-3/4 items-center">
@@ -47,7 +25,7 @@ export default function Home() {
           </p>
         </section>
 
-        <NavButton {...{path: "/register", text: "Get Started", icon: false}} />
+        <NavButton {...{ path: "/register", text: "Get Started", icon: false }} />
       </div>
 
     </>
